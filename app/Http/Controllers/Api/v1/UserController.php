@@ -90,6 +90,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json();
+        return response()->json([], 204);
     }
 }
