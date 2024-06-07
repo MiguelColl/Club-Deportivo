@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\v1\UserResource;
-use App\Http\Resources\v1\UserResourceCollection;
+use App\Http\Resources\v1\SimpleResource;
+use App\Http\Resources\v1\MultipleResourceCollection;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,20 +15,20 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return UserResourceCollection
+     * @return MultipleResourceCollection
      */
-    public function index(): UserResourceCollection
+    public function index(): MultipleResourceCollection
     {
-        return new UserResourceCollection(User::paginate());
+        return new MultipleResourceCollection(User::paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return UserResource
+     * @return SimpleResource
      */
-    public function store(Request $request): UserResource
+    public function store(Request $request): SimpleResource
     {
         $request->validate([
             'email' => 'required|email|unique:users',
@@ -42,18 +42,18 @@ class UserController extends Controller
 
         $user = User::create($userData);
 
-        return new UserResource($user);
+        return new SimpleResource($user);
     }
 
     /**
      * Display the specified resource.
      *
      * @param User $user
-     * @return UserResource
+     * @return SimpleResource
      */
-    public function show(User $user): UserResource
+    public function show(User $user): SimpleResource
     {
-        return new UserResource($user);
+        return new SimpleResource($user);
     }
 
     /**
@@ -61,9 +61,9 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return UserResource
+     * @return SimpleResource
      */
-    public function update(Request $request, User $user): UserResource
+    public function update(Request $request, User $user): SimpleResource
     {
         $request->validate([
             'email' => 'email|unique:users',
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $user->update($userData);
         
-        return new UserResource($user);
+        return new SimpleResource($user);
     }
 
     /**
