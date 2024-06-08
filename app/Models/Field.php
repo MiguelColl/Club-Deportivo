@@ -58,4 +58,32 @@ class Field extends Model
 
         return true;
     }
+
+    /**
+     * Get the available field hours for a day
+     *
+     * @param Carbon $date
+     * @return array
+     */
+    public function availableHoursOfDay(Carbon $date): array
+    {
+        $bookingHours = [];
+        
+        $bookings = $this->bookings()
+            ->whereDate('date', $date)
+            ->get();
+
+        foreach ($bookings as $booking) {
+            $date = Carbon::createFromDate($booking['date'], 'Europe/Madrid');
+            $bookingHours[] = $date->hour;
+        }
+
+        for ($i = 8; $i < 22; $i++) {
+            $hours[] = $i;
+        }
+
+        return array_map(function ($num) {
+            return $num . ':00';
+        }, array_diff($hours, $bookingHours));
+    }
 }

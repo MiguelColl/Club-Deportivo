@@ -9,6 +9,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/users', 'App\Http\Controllers\Api\v1\UserController');
             
         Route::apiResource('/sports', 'App\Http\Controllers\Api\v1\SportController');
+
+        Route::get('/fields/search', 'App\Http\Controllers\Api\v1\FieldController@search');
     
         Route::apiResource('/fields', 'App\Http\Controllers\Api\v1\FieldController');
 
