@@ -83,7 +83,7 @@ class Field extends Model
         }
 
         return array_map(function ($num) {
-            return $num . ':00';
+            return Carbon::createFromTime($num, 0)->format('H:i');
         }, array_diff($hours, $bookingHours));
     }
 }
