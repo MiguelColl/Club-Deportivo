@@ -2,33 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Field extends Model
+class Member extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'sport_id'
+        'name',
+        'surname',
+        'email',
+        'dni'
     ];
 
     /**
-     * Get the sport associated with this field
-     *
-     * @return BelongsTo
-     */
-    public function sport(): BelongsTo
-    {
-        return $this->belongsTo(Sport::class);
-    }
-
-    /**
-     * Get the bookings of the field
+     * Get the bookings of the member
      *
      * @return HasMany
      */

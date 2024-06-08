@@ -11,5 +11,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/sports', 'App\Http\Controllers\Api\v1\SportController');
     
         Route::apiResource('/fields', 'App\Http\Controllers\Api\v1\FieldController');
+
+        Route::apiResource('/members', 'App\Http\Controllers\Api\v1\MemberController');
+
+        Route::apiResource('/bookings', 'App\Http\Controllers\Api\v1\BookingController');
     });
 });
