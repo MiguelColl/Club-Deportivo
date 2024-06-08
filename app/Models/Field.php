@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,5 +36,26 @@ class Field extends Model
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Check if the field has a booking for an hour in a day
+     *
+     * @param Carbon $date
+     * @return boolean
+     */
+    public function checkAvailability(Carbon $date): bool
+    {
+        $bookings = $this->bookings()
+            ->whereDate('date', $date)
+            ->get();
+
+        foreach ($bookings as $booking) {
+            if ($date->isSameHour($booking->date)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
