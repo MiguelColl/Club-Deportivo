@@ -33,9 +33,9 @@ class MemberController extends Controller
             'name' => 'required',
             'surname' => 'required',
             'email' => 'required|email|unique:members',
-            'dni' => ['required', 'regex:/^(\d{8})([A-Z])$/']
+            'dni' => ['required', 'regex:/^(\d{8})([A-Z])$/', 'unique:members']
         ], [
-            'dni.regex' => 'El cambo :attribute no es un DNI válido, se necesitan ocho dígitos y una letra de A-Z'
+            'dni.regex' => 'El campo :attribute no es un DNI válido, se necesitan ocho dígitos y una letra de A-Z'
         ]);
 
         $member = Member::create($request->all());
@@ -65,9 +65,9 @@ class MemberController extends Controller
     {
         $request->validate([
             'email' => 'email|unique:members',
-            'dni' => 'regex:/^(\d{8})([A-Z])$/'
+            'dni' => ['regex:/^(\d{8})([A-Z])$/', 'unique:members']
         ], [
-            'dni.regex' => 'El cambo :attribute no es un DNI válido, se necesitan ocho dígitos y una letra de A-Z'
+            'dni.regex' => 'El campo :attribute no es un DNI válido, se necesitan ocho dígitos y una letra de A-Z'
         ]);
 
         $member->update($request->all());
