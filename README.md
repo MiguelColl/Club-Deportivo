@@ -27,8 +27,7 @@ Además de todo esto, se dispone de:
 
 ## Instalación
 
-Para la ejecución de este projecto se debe tener instalada la última versión de PHP, Composer y algúna base de 
-datos como MySQL o PostgreSQL. Se puede utilizar Xamp, Docker o, si dispones de Windows o MacOS, [Laravel Herd](https://herd.laravel.com/)
+Para la ejecución de este projecto se debe tener instalada la última versión de PHP, Composer y PostgreSQL. Se puede utilizar Xamp, Docker o, si dispones de Windows o MacOS, [Laravel Herd](https://herd.laravel.com/)
 que nos instala los componentes necesarios para crear un entorno de ejecución perfecto.
 
 Una vez descargado el proyecto, con el comando `composer install` se instalarán todas las dependencias. Lo siguiente
@@ -68,7 +67,7 @@ fichero `.env`.
 
 > **Importante:** La base de datos debe existir para el siguiente comando, en este caso llamada *club-deportivo*.
 
-Ahora ya podemos ejecutar los scripts `ddl.sql` y `dml.sql` contra la base de datos en dicho orden, ubicados en la
+Ahora ya podemos ejecutar los scripts `ddl_postgres.sql` y `dml_postgres.sql` contra la base de datos en dicho orden, ubicados en la
 carpeta `/scripts`, para poblarla.
 
 Ya podemos arrancar nuestro proyecto utilizando el comando `php artisan serve`, que nos facilitará la URL a la que acceder,
