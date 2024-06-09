@@ -1,66 +1,84 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Club Deportivo API
 
-## About Laravel
+## Sobre este proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Se trata de una API REST desarollarada en Laravel que permite la administración de un club deportivo.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Dicho club dispone de numerosas pistas de diferentes deportes, que son los siguientes:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Tenis
+- Paddle
+- Futbol
+- Baloncesto
+- Voleibol
 
-## Learning Laravel
+Para poder reservar y acceder a las instalaciones, deberças solicitar a algún administrador para que te dé de el alta
+como **Socio**. Dichos administradores son los **Usuarios** que manejan la aplicación. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Cada **Deporte** tiene asociado una o varias **Pistas** donde se puede practicar el deporte. Y para ello es necesario
+realizar una **Reserva** en una fecha y hora concreta. Dichas reservas son de Lunes a Domingo de 8:00 a 22:00,
+cerrando las instalaciones a las 22:00.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Además de todo esto, se dispone de:
+- Un *buscador de pistas*, que permite visualizar las pistas disponibles para la reserva de un socio.
+- Un listado de *reservas para un día concreto*, que permite visualizar las reservas de todo un día.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación
 
-## Laravel Sponsors
+Para la ejecución de este projecto se debe tener instalada la última versión de PHP, Composer y algúna base de 
+datos como MySQL o PostgreSQL. Se puede utilizar Xamp, Docker o, si dispones de Windows o MacOS, [Laravel Herd](https://herd.laravel.com/)
+que nos instala los componentes necesarios para crear un entorno de ejecución perfecto.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Una vez descargado el proyecto, con el comando `composer install` se instalarán todas las dependencias. Lo siguiente
+es configurar el archivo de variables de entorno junto con la base de datos. Para ello, modificamos el nombre del archivo
+`.env.example` por `.env`.
 
-### Premium Partners
+Después debemos modificar los datos de conexión a nuestra base de datos.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- `DB_CONNECTION=pgsql`
+- `DB_HOST=127.0.0.1`
+- `DB_PORT=5432`
+- `DB_DATABASE=club-deportivo`
+- `DB_USERNAME=YOUR_USER`
+- `DB_PASSWORD=YOUR_PASSWORD`
 
-## Contributing
+Estos podrían ser unso datos de prueba para una conexión con PostreSQL.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Se debe generar la key de la APP, llamada `APP_KEY`, y para ello ejecutamos el comando `php artisan key:generate`.
+Automáticamente se generará la key y se incluirá en fichero.
 
-## Code of Conduct
+Lo último a modificar en el fichero será añadir tres claves al final, que se utilizarán para la autenticación OAuth2.
+Las claves son:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `SECRET="YOUR_SECRET_KEY"`
+- `PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY----- YOUR_PRIVATE_KEY -----END RSA PRIVATE KEY-----"`
+- `PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY----- YOUR_PUBLIC_KEY -----END PUBLIC KEY-----"`
 
-## Security Vulnerabilities
+`SECRET`puede ser cualquier palabra, será el nombre que tendrá el token de acceso generado en la base de datos.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Las claves publica y privada necesarias estarán en la carpeta `/storage` bajo el nombre `oauth-public.key` y
+`oauth-private.key` respectivamente. Deberemos copiar el contenido de la clave en la correspondiente variable del 
+fichero `.env`.
 
-## License
+> **Importante:** La base de datos debe existir para el siguiente comando, en este caso llamada *club-deportivo*.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Con todo configurado, podemos ejecutar el comando `php artisan migrate` que lanzará las migraciones contra la base de datos.
+
+Ahora ya podemos ejecutar los scripts `dml.sql` y `dll.sql` ubicados en la carpeta `/scripts` contra la base de datos
+para poblarla.
+
+Ya podemos arrancar nuestro proyecto utilizando el comando `php artisan serve`, que nos facilitará la URL a la que acceder.
+
+## Documentación
+
+Para poder poder visualizar todos los endpoints disponibles y probarlos, se puede acceder a la documentación de Swagger
+desde la URL base en: [/api/v1/documentation](http://127.0.0.1:8000/api/v1/documentation)
+
+Una vez dentro, los únicos endpoints accesibles sin autorización son:
+- POST `/users`: Permite registrarse en el sistema como Usuario.
+- GET `/auth/login`: Permite loguearse para obtener el token de acceso.
+
+Si disponemnos del token de acceso, podemos iniciar sesión pulsando el botón ***Authorize*** para introducir el token.
+De esta forma ya tenemos acceso a todas las rutas.
