@@ -44,12 +44,14 @@ Después debemos modificar los datos de conexión a nuestra base de datos.
 - `DB_USERNAME=YOUR_USER`
 - `DB_PASSWORD=YOUR_PASSWORD`
 
-Estos podrían ser unso datos de prueba para una conexión con PostreSQL.
+Estos podrían ser unos datos de prueba para una conexión con PostreSQL.
+
+> **Importante:** Asegurate de guardar el fichero antes de ejecutar el siguiente comando.
 
 Se debe generar la key de la APP, llamada `APP_KEY`, y para ello ejecutamos el comando `php artisan key:generate`.
 Automáticamente se generará la key y se incluirá en fichero.
 
-Lo último a modificar en el fichero será añadir tres claves al final, que se utilizarán para la autenticación OAuth2.
+Lo último a modificar en el fichero se ubica al final del mismo, y son tres claves que se utilizarán para la autenticación OAuth2.
 Las claves son:
 
 - `SECRET="YOUR_SECRET_KEY"`
@@ -58,18 +60,19 @@ Las claves son:
 
 `SECRET`puede ser cualquier palabra, será el nombre que tendrá el token de acceso generado en la base de datos.
 
-Las claves publica y privada necesarias estarán en la carpeta `/storage` bajo el nombre `oauth-public.key` y
+Para generar las otras claves debemos ejecutar el comando `php artisan passport:keys`.
+
+Las claves publica y privada generadas estarán en la carpeta `/storage` bajo el nombre `oauth-public.key` y
 `oauth-private.key` respectivamente. Deberemos copiar el contenido de la clave en la correspondiente variable del 
 fichero `.env`.
 
 > **Importante:** La base de datos debe existir para el siguiente comando, en este caso llamada *club-deportivo*.
 
-Con todo configurado, podemos ejecutar el comando `php artisan migrate` que lanzará las migraciones contra la base de datos.
+Ahora ya podemos ejecutar los scripts `ddl.sql` y `dml.sql` contra la base de datos en dicho orden, ubicados en la
+carpeta `/scripts`, para poblarla.
 
-Ahora ya podemos ejecutar los scripts `dml.sql` y `dll.sql` ubicados en la carpeta `/scripts` contra la base de datos
-para poblarla.
-
-Ya podemos arrancar nuestro proyecto utilizando el comando `php artisan serve`, que nos facilitará la URL a la que acceder.
+Ya podemos arrancar nuestro proyecto utilizando el comando `php artisan serve`, que nos facilitará la URL a la que acceder,
+que será [localhost](http://127.0.0.1:8000).
 
 ## Documentación
 
@@ -78,7 +81,7 @@ desde la URL base en: [/api/v1/documentation](http://127.0.0.1:8000/api/v1/docum
 
 Una vez dentro, los únicos endpoints accesibles sin autorización son:
 - POST `/users`: Permite registrarse en el sistema como Usuario.
-- GET `/auth/login`: Permite loguearse para obtener el token de acceso.
+- POST `/auth/login`: Permite loguearse para obtener el token de acceso.
 
 Si disponemnos del token de acceso, podemos iniciar sesión pulsando el botón ***Authorize*** para introducir el token.
 De esta forma ya tenemos acceso a todas las rutas.
