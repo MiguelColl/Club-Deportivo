@@ -10,7 +10,9 @@ use App\Http\Resources\v1\SimpleResource;
 use App\Models\Field;
 use App\Models\Member;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -206,5 +208,63 @@ class BookingController extends Controller
         }
 
         return $nextValidDate;
+    }
+
+    /**
+     * Get all the information about bookings on a day
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function infoOfDay(Request $request): JsonResponse
+    {
+        $errors = [];
+
+        if (!$request->filled('date')) {
+            $errors[] = 'El parametro \'date\' no puede estar vacío en la URL';
+        }
+
+        // Try to parse date
+        $date = '';
+        try {
+            $date = $request->date('date', 'Y-m-d', self::TIMEZONE);
+        } catch (Exception $e) {
+            $errors[] = 'La fecha debe ser con formato Y-m-d: 2024-06-08';
+        }
+
+        if(!empty($errors)) {
+            return response()->json([
+                'errors' => $errors
+            ], 400);
+        }
+
+        $bookings = Booking::whereDate('date', $date)->get();
+
+        $bookingsInfo = [];
+
+        foreach ($bookings as $booking) {
+            $sport = Field::find($booking['field_id'])->sport;
+            $member = Member::find($booking['member_id']);
+            
+            $bookingsInfo[] = [
+                'id' => $booking['id'],
+                'hour' => $booking['date']->format('H:i'),
+                'field_id' => $booking['field_id'],
+                'sport' => $sport->name->value,
+                'member' => [
+                    'name' => $member->name,
+                    'surname' => $member->surname,
+                    'email' => $member->email,
+                    'dni' => $member->dni
+                ],
+                'created_at' => $booking['created_at'],
+                'updated_at' => $booking['updated_at']
+            ];
+        }
+
+        return response()->json([
+            'date' => $date->format('Y-m-d'),
+            'bookings' => $bookingsInfo
+        ], 200);
     }
 }

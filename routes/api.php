@@ -16,6 +16,8 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('/members', 'App\Http\Controllers\Api\v1\MemberController');
 
+        Route::get('/bookings/info', 'App\Http\Controllers\Api\v1\BookingController@infoOfDay');
+
         Route::apiResource('/bookings', 'App\Http\Controllers\Api\v1\BookingController');
     });
 });
